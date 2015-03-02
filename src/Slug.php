@@ -38,7 +38,7 @@ class Slug extends Model
      */
     public static function isValid($name)
     {
-        if (in_array($name, config('slug.reserve.words')))
+        if (in_array($name, config('slug.reserve.words', [])))
             return false;
 
         $models = config('slug.reserve.models', []);
