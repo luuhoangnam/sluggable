@@ -6,7 +6,7 @@ return [
             // 'admin',
         ],
         'models' => [
-            // 'users.username',
+            // 'App\User' => 'username', // $model => $attribute
         ],
     ],
 ];
