@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Namest\\Likeable\\": "src/"
+            "Namest\\Sluggable\\": "src/"
         }
     },
     "minimum-stability": "stable"
