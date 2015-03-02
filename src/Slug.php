@@ -38,6 +38,15 @@ class Slug extends Model
      */
     public static function isValid($name)
     {
+        if (in_array($name, config('slug.reserve.words')))
+            return false;
+
+        $models = config('slug.reserve.models', []);
+        foreach ($models as $model => $attribute) {
+            if (forward_static_call([$model, 'where'], $attribute, '=', $name)->first())
+                return false;
+        }
+
         return static::whereName($name)->first() == null;
     }
 
