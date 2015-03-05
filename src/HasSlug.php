@@ -2,6 +2,8 @@
 
 namespace Namest\Sluggable;
 
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Str;
 
 /**
@@ -11,6 +13,7 @@ use Illuminate\Support\Str;
  * @package Namest\Sluggable
  *
  * @property-read string slug
+ * @method static QueryBuilder|EloquentBuilder|$this hasSlug(string $slug)
  *
  */
 trait HasSlug
@@ -61,5 +64,23 @@ trait HasSlug
             $slug->sluggable_id = $sluggable->getKey();
             $slug->save();
         });
+    }
+
+    /**
+     * @param EloquentBuilder|QueryBuilder $query
+     * @param string                       $slug
+     *
+     * @return QueryBuilder
+     */
+    public function scopeHasSlug($query, $slug)
+    {
+        $table   = $this->getTable();
+        $builder = $query->getQuery();
+
+        $builder->join('slugs', 'slugs.sluggable_id', '=', "{$table}.id")
+                ->where('slugs.sluggable_type', '=', get_class($this))
+                ->where('slugs.name', '=', $slug);
+
+        return $builder;
     }
 }
