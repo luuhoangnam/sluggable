@@ -48,6 +48,7 @@ trait HasSlug
         }
 
         $slug->name           = $name;
+        $slug->sluggable_id   = $this->getKey();
         $slug->sluggable_type = get_class($this);
 
         if ($this->exists) {
@@ -57,7 +58,6 @@ trait HasSlug
         }
 
         $this->saved(function ($sluggable) use ($slug) {
-            $slug->sluggable_id = $sluggable->getKey();
             $slug->save();
         });
     }
